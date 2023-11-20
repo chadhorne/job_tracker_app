@@ -1,5 +1,30 @@
 import 'package:flutter/material.dart';
 
+const routeHome = '/';
+const routeSettings = '/settings';
+const routePrefixDeviceSetup = '/setup';
+const routeDeviceSetupStart = '/setup/$routeDeviceSetupStartPage';
+const routeDeviceSetupStartPage = 'find_devices';
+const routeDeviceSetupSelectDevicePage = 'select_device';
+const routeDeviceSetupConnectingPage = 'connecting';
+const routeDeviceSetupFinishedPage = 'finished';
+
+onGenerateRoute: (settings) {
+  late Widget page;
+  if (settings.name == routeHome) {
+    page = const HomeScreen();
+  } else if (settings.name == routeSettings) {
+    page = const SettingsScreen();
+  } else if (settings.name!.startsWith(routePrefixDeviceSetup)) {
+    final subRoute = settings.name!.substring(routePrefixDeviceSetup.lenth);
+    page = SetupFlow(
+      setupPageRoute: subRoute,
+    );
+  } else {
+    throw Exception('Unknown route: ${settings.name}');
+  }
+}
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
